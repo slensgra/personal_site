@@ -43,6 +43,7 @@ p {
     padding-left: 50px;
     padding-right: 50px;
     box-shadow: 1px 1px 4px rgb(59, 51, 81);
+    max-width: 1000px;
 }
 
 #my-name {
