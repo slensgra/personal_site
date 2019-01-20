@@ -11,7 +11,7 @@ body {
 }
 
 .main-link:hover {
-    background-color: rgba(93, 255, 0, 0.7);
+    background-color: rgba(93, 255, 0, 0.5);
     text-decoration: underline;
 }
 
@@ -25,18 +25,30 @@ p {
     text-align: center;
 }
 
+#description-container {
+    padding-bottom: 20px;
+    display: inline-block;
+    width: 100%;
+}
+
+#description {
+    color: #48444c;
+}
+
 #name-div {
-    background-color: rgba(255.0, 255.0, 255, 0.90);
+    background-color: rgba(255.0, 255.0, 255, 0.95);
     display: inline-block;
     font-family: Hack;
     padding-bottom: 46px;
-    box-shadow: 3px 3px 7px rgb(59, 51, 81);
+    padding-left: 50px;
+    padding-right: 50px;
+    box-shadow: 1px 1px 4px rgb(59, 51, 81);
 }
 
 #my-name {
-    font-size: 70px;
+    font-size: 90px;
     color: #48444c; 
-    padding: 10px 50px;
+    margin-bottom: -10px;
 }
 
 #fabric-container {
@@ -52,5 +64,5 @@ p {
     width: 1100px;
     float: right;
     right: -60px;
-    top: 0px;
+    top: -50px;
 }
