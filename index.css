@@ -1,0 +1,56 @@
+body {
+    margin: 0;
+    overflow: hidden;
+}
+
+.main-link {
+    text-decoration: none;
+    font-size: 35px;
+    color: #48444c;
+    padding: 5px 15px;
+}
+
+.main-link:hover {
+    background-color: rgba(93, 255, 0, 0.7);
+    text-decoration: underline;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+#name-div-container {
+    position: relative;
+    top: 5%;
+    text-align: center;
+}
+
+#name-div {
+    background-color: rgba(255.0, 255.0, 255, 0.90);
+    display: inline-block;
+    font-family: Hack;
+    padding-bottom: 46px;
+    box-shadow: 3px 3px 7px rgb(59, 51, 81);
+}
+
+#my-name {
+    font-size: 70px;
+    color: #48444c; 
+    padding: 10px 50px;
+}
+
+#fabric-container {
+    position: absolute;
+    overflow: hidden;
+    z-index: -1;
+    width: 100%;
+}
+
+#fabric-image {
+    display: inline-block;
+    position: relative;
+    width: 1100px;
+    float: right;
+    right: -60px;
+    top: 0px;
+}
