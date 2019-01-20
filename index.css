@@ -1,6 +1,7 @@
 body {
     margin: 0;
     overflow: hidden;
+    font-family: Hack;
 }
 
 .main-link {
@@ -19,7 +20,7 @@ p {
     margin-bottom: 20px;
 }
 
-#name-div-container {
+.modal-white-container {
     position: relative;
     top: 5%;
     text-align: center;
@@ -35,10 +36,9 @@ p {
     color: #48444c;
 }
 
-#name-div {
+.modal-white {
     background-color: rgba(255.0, 255.0, 255, 0.95);
     display: inline-block;
-    font-family: Hack;
     padding-bottom: 46px;
     padding-left: 50px;
     padding-right: 50px;
@@ -65,4 +65,13 @@ p {
     float: right;
     right: -60px;
     top: -50px;
+}
+
+#fabric-image-green {
+    display: inline-block;
+    position: relative;
+    width: 1300px;
+    float: right;
+    right: -30px;
+    top: -30px;
 }
