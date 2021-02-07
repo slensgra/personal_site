@@ -1,13 +1,24 @@
 body {
     margin: 0;
     overflow: hidden;
-    font-family: Hack;
+    font-family: 'Open Sans', sans-serif;
     color: #48444c;
+    background-color: #131052;
+}
+
+.title-font {
+    font-family: 'Hack', monospace;
+    font-weight: bold;
+    font-size: 110px;
+    color: #48444c; 
+    margin-bottom: -10px;
+    margin-top: 40px;
 }
 
 .main-link {
     text-decoration: none;
-    font-size: 35px;
+    font-size: 40px;
+    font-family: 'Hack';
     color: #48444c;
     padding: 5px 15px;
 }
@@ -30,27 +41,21 @@ p {
 #description-container {
     padding-bottom: 20px;
     display: inline-block;
-    width: 100%;
+    width: 65%;
 }
 
 #description {
     color: #48444c;
+    font-size: 20px;
 }
 
 .modal-white {
     background-color: rgba(255.0, 255.0, 255, 0.95);
     display: inline-block;
     padding-bottom: 46px;
-    padding-left: 50px;
-    padding-right: 50px;
-    box-shadow: 1px 1px 4px rgb(59, 51, 81);
+    padding-left: 10px;
+    padding-right: 10px;
     max-width: 1000px;
-}
-
-#my-name {
-    font-size: 90px;
-    color: #48444c; 
-    margin-bottom: -10px;
 }
 
 #fabric-container {
