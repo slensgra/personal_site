@@ -1,38 +1,121 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-  <link rel="stylesheet" type="text/css" href="index.css" />
-  <link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack-subset.css'>
-  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Press+Start+2P|Staatliches" rel="stylesheet">
+	<meta charset="UTF-8">
+	<!-- jQuery 1.8 or later, 33 KB -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 
-  <title>Sam Lensgraf | Home</title>
+	<!-- Fotorama from CDNJS, 19 KB -->
+	<link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+	
+	<link rel="stylesheet" href="index.css">
+	<link rel="stylesheet" href="awsm.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<script src="readmore.min.js"></script>
+
+	
+	<title>Sam Lensgraf</title>
 </head>
 
 <body>
-  <div class="modal-white-container">
-    <div class="modal-white">
-      <div id="title-container">
-        <h1 class="title-font">SAM LENSGRAF</h1>
-        <div id="description-container">
-          <p id="description">
-          Ph.D. Student at the Dartmouth <a href="https://rlab.cs.dartmouth.edu/home/">Reality and Robotics Lab</a> exploring the geometry and kinematics of interlocked structures.
-          </p>
-        </div>
-      </div>
 
-      <p>
-        <h2 class="main-link" href="./projects.html">Selected Projects</h2>
-      </p>
-      <p>
-        <h2 class="main-link" href="./publications.html">Publications</h2>
-      </p>
-      <p>
-        <h2 class="main-link" href="./sam_lensgraf_resume.pdf">Resume</h2>
-      </p>
-    </div>
-  </div>
+<header>
+		<h1>Sam Lensgraf</h1>
+		<p>Ph.D. student at the <a href="https://rlab.cs.dartmouth.edu/home/">Dartmouth Reality and Robotics Lab</a></p>
+	</header>
+	<main>
+		<section>
+			<h2>About</h2>
+			<a href="sam_lensgraf_resume.pdf">Resume</a>
+			
+			<p>I am interested in anything construction or fabrication related! My main project right now is building a robotic system for autonomous underwater construction of modular structures. Publications coming soon! I've also worked on more theoretical analysis of interlocking structures and motion planning for FDM 3D printers.</p>
+			
+			<div class="fotorama">
+  				<img src="static_assets/working-with-robot-underwater.PNG" data-caption="Me deploying underwater construction robot in Barbados.">
+		  		<img src="static_assets/me-with-robot.PNG" data-caption="I had this hat made so I could match the robot!!">		
+  				<img src="static_assets/me-giving-chadev-talk.PNG" data-caption="Presenting my 3D printing work to a group of developers in Chattanooga.">
+			</div>
+		</section>
+		<section>
+			<h2>Project Videos</h2>
+			
+			<dl>
+				<dt>Progress update for underwater construction project</dt>
+				<dd>
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/o9Pe2sMnwmo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</dd>
+			
+				<dt>Kinematic analysis software for large interlocking structures</dt>
+				<dd>
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/8Src1QLaU7k" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</dd>
+			
+				<dt>Motion planning for 3D printers</dt>
+				<dd>
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/xCs3VuTFIXw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</dd>
+			</dl>
+		</section>
+		<section>
+			<h2>Publications</h2>
+			<dl>
+				<dt>PuzzleFlex: kinematic motion of chains with loose joints</dt>
+					<dd class="publication-data">
+						<p><em>Samuel Lensgraf, Karim Itani, Yinan Zhang, Zezhou Sun, Yijia Wu, Alberto Quattrini Li, Bo Zhu, Emily Whiting, Weifu Wang, Devin Balkcom</em></p>
+						<p>
+							<strong>Abstract:</strong> This paper presents a method of computing free motions of a planar assembly of rigid bodies connected by loose joints. Joints are modeled using local distance constraints, which are then linearized with respect to configuration space velocities, yielding a linear programming formulation that allows analysis of systems with thousands of rigid bodies. Potential applications include analysis of collections of modular robots, structural stability perturbation analysis, tolerance analysis for mechanical systems, and formation control of mobile robots.
+						</p>
+						<p>
+							<a href="https://ieeexplore.ieee.org/document/9196854">IEEE</a> | <a href="https://arxiv.org/abs/1906.08708">arXiv</a> | <a href="https://techxplore.com/news/2019-07-puzzleflex-kinematic-motion-loose-joints.html">TechXplore Article</a>
+						</p>
+					</dd>
+				<dt>Toward Optimal FDM Toolpath Planning with Monte Carlo Tree Search</dt>
+					<dd>
+						<p><em>Chanyeol Yoo, Samuel Lensgraf, Robert Fitch, Lee M. Clemon, Ramgopal Mettu</em></p>
+						<p>
+							<strong>Abstract:</strong> The most widely used methods for toolpath planning in 3D printing slice the input model into successive 2D layers to construct the toolpath. Unfortunately the methods can incur a substantial amount of wasted motion (i.e., the extruder is moving while not printing). In recent years we have introduced a new paradigm that characterizes the space of feasible toolpaths using a dependency graph on the input model, along with several algorithms that optimize objective functions (wasted motion or print time). A natural question that arises is, under what circumstances can we efficiently compute an optimal toolpath? In this paper, we give an algorithm for computing fused deposition modeling (FDM) toolpaths that utilizes Monte Carlo Tree Search (MCTS), a powerful generalpurpose method for navigating large search spaces that is guaranteed to converge to the optimal solution. Under reasonable assumptions on printer geometry that allow us to compress the dependency graph, our MCTS-based algorithm converges to find the optimal toolpath. We validate our algorithm on a dataset of 75 models and examine the performance on MCTS against our previous best local search-based algorithm in terms of toolpath quality. We show that a relatively short time budget for MCTS yields results on par with local search, while a larger time budget yields a 15% improvement in quality over local search. Additionally, we examine the properties of the models and MCTS executions that lead to better or worse results.
+						</p>
+						<p>
+							<a href="https://ieeexplore.ieee.org/document/9196945">IEEE</a> | <a href="https://arxiv.org/abs/2002.01631">arXiv</a>
+						</p>
+					</dd>
+				<dt>Incorporating Kinematic Properties into Fused Deposition Toolpath Optimization</dt>
+					<dd>
+						<p><em>Samuel Lensgraf, Ramgopal R. Mettu</em></p>
+						<p>
+							<strong>Abstract:</strong> The most widely used methods for toolpath planning in fused deposition 3D printing slice the input model into successive 2D layers in order to construct the toolpath. Unfortunately slicing-based methods can incur a substantial amount of wasted motion (i.e., the extruder is moving while not printing), particularly when features of the model are spatially separated. In recent work we have introduced a new paradigm that constructs the toolpath in 3D and prints local features to minimize wasted motion. Our algorithm is based on a local search and we have demonstrated substantial improvements in the efficiency of the resulting toolpaths. Our approach is amenable to incorporating physical constraints of the 3D printing process, and, in this paper we extend our approach to incorporate kinematic properties into toolpath optimization. With an accurate kinematic model of the extruder, our algorithm is able to model the real-world fabrication time of the model with a high degree of accuracy. To our knowledge, this toolpath optimization algorithm is the first to encode real-world fabrication time as the objective function. We demonstrate the real-world improvement in fabrication time that is possible with our algorithm on a benchmark of almost 600 models. We find improvement in nearly every toolpath generated for our benchmark set (with a mean of 3.2%), but substantially larger improvements for some models. To rationalize these results, we introduce a metric for model characterization that we call “oriented compactness” and show that it correlates positively with our observations. We believe this metric can be an important tool in the setup of fabrication (e.g., by guiding an orientation search of the model).
+						</p>
+						<p>
+							<a href="https://ieeexplore.ieee.org/document/8594398">IEEE</a>
+						</p>
+					</dd>
+				<dt>An improved toolpath generation algorithm for fused filament fabrication</dt>
+					<dd>
+						<p><em>Samuel Lensgraf, Ramgopal R. Mettu</em></p>
+						<p>
+							<strong>Abstract:</strong> Widely-used methods for toolpath planning in fused filament fabrication slice the input 3D model into 2D layers and construct a toolpath. In prior work (ICRA 2016) we gave a simple greedy algorithm that changed this paradigm and constructed the toolpath in 3D by printing local features in their entirety. This algorithm significantly improved upon layer-based methods, achieving a 34% mean reduction of wasted motion. In this paper we give a new algorithm that is more robust and achieves significantly better performance than the greedy approach. Our algorithm utilizes local search and nearly doubles our prior improvement, achieving a mean/median reduction of 62% over layer-based methods on the same benchmark of over 400 models. We also study toolpath optimality using a novel integer linear programming formulation. This formulation allows us to solve a linear programming relaxation that, while computationally intensive, can give us a lower bound on the optimal solution quality, giving us the ability to rigorously characterize solution quality for a given input model.
+						</p>
+						<p>
+							<a href="https://ieeexplore.ieee.org/document/7989141">IEEE</a>
+						</p>
+					</dd>
+				<dt>Beyond layers: A 3D-aware toolpath algorithm for fused filament fabrication</dt>
+					<dd>
+						<p><em>Samuel Lensgraf, Ramgopal R. Mettu</em></p>
+						<p>
+							<strong>Abstract:</strong> Fused filament fabrication (FFF) is gaining traction for rapid prototyping and custom fabrication. Existing toolpath generation methods for FFF printers take as input a three-dimensional model of the target object and construct a layered toolpath that will fabricate the object in 2D slices of a chosen thickness. While this approach is computationally straightforward, it can produce toolpaths that can contain significant, yet unnecessary, extrusionless travel. In this paper we propose a novel 3D toolpath generation paradigm that leverages local feature independence in the target object. In contrast to existing FFF slicing methods which print an object layer by layer, our algorithm provides a means to print local features of an object without being constrained to a single layer. The key benefit of our approach is a tremendous reduction in “extrusionless travel,” in which the printer must move between features without performing any extrusion. We show on a benchmark of 409 objects that our method can yield substantial savings in extrusionless travel, 34% on average, that can directly translate to a reduction in total manufacturing time.
+						</p>
+						<p>
+							<a href="https://ieeexplore.ieee.org/document/7487546">IEEE</a>
+						</p>
+					</dd>
+			</dl>
+		</section>
+	</main>
+	<script type="text/javascript">$('dd').readmore({collapsedHeight: 100, moreLink: '<a style="margin-left: 40px;" href="#">...MORE</a>', lessLink: '<a style="margin-left: 40px;" href="#">close</a>'});</script>
 </body>
 
 </html>
