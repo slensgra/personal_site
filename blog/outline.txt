@@ -1,0 +1,14 @@
+How do we start this out?
+Or rather what is the goal of the article?
+It is basically a report of the project -- ie here is what we did and why we did what we did
+but it is free of the constraints of a conference format. Or rather, it is an explanation of the results that is free to be long and include nonacademic stuff
+it should still be pretty short though
+
+
+I guess the main difference is that it will include some engineering rationale behind things. What is the structure then?
+* We provide an overview of the system, noting how simple it is.
+
+* we could divide it down into the main subsystems:
+    1. localization
+    2. Manipulator / block design
+    3. Control / thrusters

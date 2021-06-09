@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<!-- jQuery 1.8 or later, 33 KB -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+	<!-- Fotorama from CDNJS, 19 KB -->
+	<link  href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+	
+	<link rel="stylesheet" href="blog.css">
+	<link rel="stylesheet" href="../awsm.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<title>Droplet</title>
+</head>
+
+<body>
+
+<header>
+    <h1>Droplet V1</h1>
+    <p>A first (baby) step towards autonomous underwater construction</p>
+</header>
+<main>
+    <section>
+        <video src="../static_assets/80x_seven_block_l_wall.mp4" controls=""></video>
+        <h2>Intro / Background</h2>
+
+        <p>
+            In academic writing, especially in "systems" style robotics papers, the story of <em>how</em> a system gets designed is lost.
+            The concise format of conference papers demands that the narrative of actually designing and iterating on the system be totally eliminated.
+            The problem when the system as a whole is your work product is that presenting over a year's worth of work in six or seven terse pages misses
+            a lot of the value that the work can provide. In this article I want to peel back the curtain and show a little bit about how we actually got a (heavily)
+            modified BlueROV2 Heavy to stack blocks reliably. This is (as far as we know) the first time anyone has attempted to make an underwater block stacking
+            robot system!
+
+            <ul>
+                <li>What workflow works for deploying and debugging an autonomous underwater robot?</li>
+                <li>What software architecture is responsive enough but still also simple / easy to iterate on?</li>
+                <li>How can we design a simple interaction flow that is at least sort of safe?</li>
+                <li>How can we deploy code to an AUV that only has intermittent internet access?</li>
+                <li>When so many factors work together to cause failures, how can we isolate things?</li>
+            </ul>
+        </p>
+    </section>
+
+    <section>
+        <h2>A first try</h2>
+        <video src="../static_assets/droplet_v0_build_example_8x.mp4" controls=""></video>
+        <p></p>
+        <video src="../static_assets/gripper_v0.mp4" controls="" style="max-height: 450px;"></video>
+        <p>
+        </p>
+    </section>
+
+    <section>
+        <h2>The evolution of the manipulator</h2>
+        <figure>
+            <img src="../static_assets/Gripper-evolution.png" alt="gripper_evolution">
+            <figcaption>
+                The evolution of the manipulator
+            </figcaption>
+
+            <video src="../static_assets/newest_gripper_off_robot.mp4" controls="" style="max-height: 450px;"></video>
+        </figure>
+    </section>
+
+    <section>
+        <h2>Evolution of the workflow</h2>
+
+        <figure>
+            <img src="../static_assets/me_in_pool_working_2.JPG" alt="Me in pool">
+            <figcaption>
+                aaa
+            </figcaption>
+        </figure>
+    </section>
+
+    <section>
+        <h2>
+            Evolution of the infrastructure
+        </h2>
+
+        <figure>
+            <img src="../static_assets/build_platforms.JPG" alt="Me in pool">
+            <figcaption>
+                aaa
+            </figcaption>
+        </figure>
+    </section>
+
+
+    <section>
+        <h2>
+            Evolution of the internal hardware
+        </h2>
+
+        <figure>
+            <img src="../static_assets/build_platforms.JPG" alt="Me in pool">
+            <figcaption>
+                aaa
+            </figcaption>
+        </figure>
+    </section>
+</main>
+
+</body>
+</html>
