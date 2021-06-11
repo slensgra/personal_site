@@ -56,7 +56,60 @@
     </section>
 
     <section>
-        <h2>The evolution of the manipulator</h2>
+        <h2>Hardware Platform (inside the main tube)</h2>
+
+        <p>
+            To achieve a reliable, autonomous system we ended up replacing every single part of the main electronics tube (except the power terminal block). We kept the basic premise of the flow of connections between components
+            the same but used higher quality (more expensive) components designed more for autonomous robots rather than a ROV. 
+        </p>
+
+        <h3>Camera</h3>
+
+        <h4>ESCs</h4>
+
+        <h4>Main Computer</h4>
+
+        <h4>Removing the tether</h4>
+
+        <h4>A simple UI for operation by swimmers</h4>
+    </section>
+
+    <section>
+        <h2>Control System</h2>
+
+        <p>Our initial attempt at a control architecture was to try and keep as much of the original BlueROV2's ardupilot-based control system in tact as possible. We would control the robot using a cascaded PID
+        controller where the higher level PID controller utilized RC override messages through mavros. We tried controlling the robot using this style in several of the modes but got the best results in the GUIDED mode.
+        Using GUIDED mode without an external localization source required editing the ArduSub firmware.</p>
+
+        <p>We achieved limited success using this control strategy. A primary challenge was debugging whether weird behaviors were coming from the higher level PID controller or one of the ArduPilot ones.
+            This problem was exacerbated by how complex ArduPilot's controller code is to read and the limited ability to get debugging info off of the FCU. We ended up adding "print" (gcs.send_text() calls) into the FCU firmware
+            trying to debug the problems
+        </p>
+
+        <p> An additional layer of complexity in the controller also comes in when you consider the details of how a "pwm" signal emitted from the PixHawk is interpreted by the microchips that translate the signal into a thruster speed.
+            The chips are called "ESCs" and are driven by a closed source driver called BLHeli. The driver exposes a ton of configuration parameters that are difficult to interpret the meaning of. Basically the ESC driver
+            interprets the pwm signal as a "throttle position" and the driver manages all of the nitty-gritty details of accelerating the brushless DC thrusters. All of this means that given a pwm signal coming out of the autopilot
+            it isn't clear what exactly the thrusters are going to do. Another confounding piece is complecity is that each motor has a different response to pwm values sent to the ESCs. Each motor starts spinning at a different PWM value
+        and the value is different in the forward and reverse directions.</p>
+
+        <h2>A simplified control system</h2>
+
+        <p>
+            Achieving autonomous execution of behaviors that require control much finer than that usually required of a ROV required totally reimagining the control system. To that end, we created a drastically simplified control
+            system. We replaced the blue robotics BasicESCs with more capable 4-in-one ESCs that allow configuration via a GUI which made it relatively simply to change the ESC configuration to be more suited to what we need. We
+            also developed a hugely simplified firmware for the FCU. The firmware is so simple that it effetively demotes the FCU to an IO board running the mavlink messaging protocol. Rather than using the joystick-based mapping
+            between rc override channels and the motors, we made each channel reference a distinct motor. Other than performing some basic safety checks, the firmware simply forwards the speeds given in an rc override message to
+            the ESCs.
+        </p>
+
+        <p>
+            The main mission command and control software runs on the AUV's main computer in ROS nodes. A major benefit of having little complexity in the FCU is that everything that goes into making a decision for the robot
+            is recorded in the form of ROS messages and can be replayed as a bag file. The PID controller on the main computer that directly controls the thrusters adopts its structure from ArduSub's PID controllers.
+        </p>
+    </section>
+
+    <section>
+        <h2>The Manipulator</h2>
         <figure>
             <img src="../static_assets/Gripper-evolution.png" alt="gripper_evolution">
             <figcaption>
@@ -65,10 +118,12 @@
 
             <video src="../static_assets/newest_gripper_off_robot.mp4" controls="" style="max-height: 450px;"></video>
         </figure>
+
+        Throughout each iteration of the manipulator
     </section>
 
     <section>
-        <h2>Evolution of the workflow</h2>
+        <h2>Deployment workflow</h2>
 
         <figure>
             <img src="../static_assets/me_in_pool_working_2.JPG" alt="Me in pool">

@@ -8,7 +8,27 @@ it should still be pretty short though
 I guess the main difference is that it will include some engineering rationale behind things. What is the structure then?
 * We provide an overview of the system, noting how simple it is.
 
+It's challenging to divide things up along the system lines because everything is linked.
+I don't have the experiment timeline recorded very well so that would be hard to recreate
+
+
 * we could divide it down into the main subsystems:
     1. localization
     2. Manipulator / block design
     3. Control / thrusters
+
+
+Robot hardware platform
+    What is an interesting enough structure for one of these sections?
+
+    things that didn't work:
+        * blue robotics h264 webcam
+        * tethered operation
+        * no kill switch
+        * no ui
+        * raspberry provide
+
+
+Localization / Control
+    things that worked:
+        * the current control architecture (custom FCU firmware, new FCU)
