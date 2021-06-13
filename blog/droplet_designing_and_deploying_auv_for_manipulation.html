@@ -20,58 +20,128 @@
 <body>
 
 <header>
-    <h1>Droplet V1</h1>
+    <h1>Engineering Droplet V1: An Autonomous Underwater Construction Robot</h1>
     <p>A first (baby) step towards autonomous underwater construction</p>
 </header>
 <main>
     <section>
-        <video src="../static_assets/80x_seven_block_l_wall.mp4" controls=""></video>
-        <h2>Intro / Background</h2>
-
-        <p>
-            In academic writing, especially in "systems" style robotics papers, the story of <em>how</em> a system gets designed is lost.
-            The concise format of conference papers demands that the narrative of actually designing and iterating on the system be totally eliminated.
-            The problem when the system as a whole is your work product is that presenting over a year's worth of work in six or seven terse pages misses
-            a lot of the value that the work can provide. In this article I want to peel back the curtain and show a little bit about how we actually got a (heavily)
-            modified BlueROV2 Heavy to stack blocks reliably. This is (as far as we know) the first time anyone has attempted to make an underwater block stacking
-            robot system!
-
-            <ul>
-                <li>What workflow works for deploying and debugging an autonomous underwater robot?</li>
-                <li>What software architecture is responsive enough but still also simple / easy to iterate on?</li>
-                <li>How can we design a simple interaction flow that is at least sort of safe?</li>
-                <li>How can we deploy code to an AUV that only has intermittent internet access?</li>
-                <li>When so many factors work together to cause failures, how can we isolate things?</li>
-            </ul>
+		<h2>Droplet in action</h2>
+		
+		<p> Before diving into the narrative, here's a video of Droplet doing its thing. Getting here was a long road and this article tells the story of how we did it. It'll talk about our engineering process, how we tested components,&nbsp; designed sub-experiments and the mistakes we made along the way.</p>
+		<p>&nbsp;</p>
+<video src="../static_assets/80x_seven_block_l_wall.mp4" controls=""></video>
+        <h2>Some logistics</h2>
+		<p>
+			This article is a companion article to an RSS2021 paper. Where an academic article focuses on only things of academic interest: expansions of what is <em>possible</em>, this article
+			does a deep dive into the engineering process of actually implementing a first step towards autonomous underwater construction. If you use anything from this article please cite the academic paper. Anyone interested in replicating this system in whole or in part (like the redone main electronics tube) is invited to send me an email and I'll help you get your system running. CAD files and software are available on github. Now, enjoy!
         </p>
+		
+		<h2>The big idea</h2>
+		
+		<p>
+    	  The broad goal of this project was to establish a solid first step towards more practical autonomous underwater construction systems. The general idea is that the robot will be fitted with a gripper custom designed to manipulate blocks (or bricks). It will unload the blocks from a pallet and stack them according a known construction plan -- like a 3D printer or CNC machine. The construction plan could eventually represent a sea wall or the boundaries of an artificial harbor. The basic ingredients we need to make the system are easy to state:
+		</p>
+		<ol>
+			<li>The robot needs to know where it is</li>
+			<li>It needs to be able to position itself pretty well relative to stuff (blocks, the pallet of blocks)</li>
+			<li>It needs to be good at picking up and dropping blocks at the right places</li>
+			<li>It needs a place to pick blocks up from and to put them down on</li>
+		</ol>
+		
+		<p>
+			Our prototype system, called <strong>Droplet</strong>, implements these core capabilities in the most basic way that we could think of. Even so, building it required just over a year of effort. We went through two major iterations on the system. The first could stack up to three blocks successfully, or about four repetitions of picking and placing a block in the same place. The second was able to pick and place a block successfully 100 times with no error.
+		</p>
+		
+		<p>
+			The rest of this article will talk about how all of the major components of Droplet were designed, including how the first failed iteration's short comings informed the much more successful second iteration.
+		</p>
     </section>
 
     <section>
-        <h2>A first try</h2>
-        <video src="../static_assets/droplet_v0_build_example_8x.mp4" controls=""></video>
-        <p></p>
-        <video src="../static_assets/gripper_v0.mp4" controls="" style="max-height: 450px;"></video>
+        <h2>A pretty good first try</h2>
+		
+		<p>
+			Our first iteration of Droplet was based on a stock BlueROV2 heavy with no modifications to its internal electronics. Its manipulator was a newton gripper with 3D printed finger modifications zip tied on and facing forward. The blocks were fitted with ARTags from ARTrack Alvar which were used to provide relative-position information to the robot. Other ARTrack alvar tags were scattered behind the PVC tables were used to provide global location information through a basic SLAM algorithm. The controller was a cascaded PID controller where the higher level PID controller issued RCOverride commands, simulating a pilot with a joystick. Here it is in action:
+		</p>
+        
+		<video src="../static_assets/droplet_v0_build_example_8x.mp4" controls=""></video>
+		
         <p>
-        </p>
+			We'll go into detail about all of the shortcomings of this system, but we can see many of the shortcomings right off the bat:
+			<ul>
+				<li>the robot overshoots every move it makes</li>
+				<li>it cannot hold its pitch steady</li>
+				<li>it fails to pick the blocks up properly because of the poorly made gripper</li>
+				<li>the error correcting features on the blocks can't handle the amount of pre-drop position error</li>
+			</ul>
+		</p>
     </section>
 
     <section>
         <h2>Hardware Platform (inside the main tube)</h2>
 
         <p>
-            To achieve a reliable, autonomous system we ended up replacing every single part of the main electronics tube (except the power terminal block). We kept the basic premise of the flow of connections between components
-            the same but used higher quality (more expensive) components designed more for autonomous robots rather than a ROV. 
-        </p>
+          To achieve a reliable, autonomous system we ended up replacing every single part of the main electronics tube (except the power terminal block). CAD files to replicate our mounting hardware for all the new electronics are <a href="https://github.com/dartmouthrobotics/underwater-assembly-auv">here</a>. We kept the basic premise of the flow of connections between components
+           the same as the stock BlueROV but used higher quality components designed more for autonomous robots rather than a ROV. Attempting to use the stock hardware and software for the BlueROV quickly exposed how different it is to design a good platform for an autonomous robot vs designing something to be teleoperated. In short: people are way smarter and more adaptable than software so little things like mediocre image quality, poor latency and lack of easy configurability can be smoothed over with our big old brains. I'll dive into each component of the system below and describe how we started, what the problems were and how we fixed them.</p>
 
         <h3>Camera</h3>
 
-        <h4>ESCs</h4>
+		<p>
+			We started out with the stock <a href="https://bluerobotics.com/product-category/sensors-sonars-cameras/cameras/">BlueROV2 camera</a> that comes mounted on a little servo for tilting. The camera streams images through a gstreamer pipeline defined <a href="https://github.com/bluerobotics/companion/blob/master/scripts/start_video.sh">here</a>. The pipeline starts out using <a href="https://en.wikipedia.org/wiki/Video4Linux">v4l</a> to pull frames off of the camera, puts them in a queue, then chunks them up into packets to send out over the tether. Somewhere in the pipeline it appends a timestamp to the image frame that doesn't necessarily exactly correspond to when the frame was captured. We built a <a href="https://gitlab.com/dartmouthrobotics/bluerov_bringup/-/tree/master">ROS node</a> that uses another gstreamer <a href="https://gitlab.com/dartmouthrobotics/bluerov_bringup/-/blob/master/param/gstreamer2.param">pipeline</a> to read frames off of the tether.
+		</p>
+		
+		<p>
+			The LowHD (stock BlueROV) camera is an h264 webcam first and foremost so it uses hardware acceleration to compress frames as they are captured to make sending its stream over the wire efficient. This is great for people because we handle slight noise in images really well. The story is not the same for localizing based on visual fiducial markers: h264 compression causes <a href="https://en.wikipedia.org/wiki/Compression_artifact">compression artifacts</a>. One particular artifact, called <a href="https://en.wikipedia.org/wiki/Ringing_artifacts#JPEG">ringing</a>, causes fuzz around sharp changes in colors in an image. Ringing plays havoc with visual fiducials which usually depend on stable localization of four corners of a black square on a white background. Small perturbations in the software's idea of where the corners of the marker are lead to big noise in the robot's position relative to the marker. Increased position noise can obviously lead the robot to make mistakes when dropping blocks!
+		</p>
+		
+		<p>
+			In addition, we found that there seems to be an inherent 0.1 second latency when pulling images off of the camera. This persisted even when we captured frames without the gstreamer pipeline. Our guess is that there is some sort of queueing of frames going on in the camera's hardware before or after the compression takes place. Or perhaps it simply takes the camera 0.1 seconds to compress a 1920x1080 image. The problem persisted even when using v4l's configuration tool to reduce the image size or to read the frames in a raw image format. For a person, an 0.1 second latency is nothing, especially if they aren't trying to do anything detailed. For software, it is hard to design an effective controller when the reaction to a change in your control input is only aparent 0.1 seconds after you take the action.
+		</p>
+		
+		<p>
+			The tilting servo also caused more problems than it solved for us. Properly localizing relative to visual fiducial markers requires a very accurate idea of the camera's <a href="https://ksimek.github.io/2012/08/22/extrinsic/">extrinsics</a> relative to its center of mass. Particularly important is understanding how the camera is angled relative to the chassis since visual fiducial markers have to transform location readings coming from the camera frame into whatever frame you control based on. Small errors in the camera's tilt can lead to very wrong ideas of the robot's relative position to a marker when the robot is a meter away. Think of a right triangle with a one degree angle between the hypotenuse and the base. As we increase the length of the hypotenuse, the length of the shorter edge also increases.
+		</p>
 
-        <h4>Main Computer</h4>
+		<p>
+			We solved these problems by switching from the stock BlueROV camera to a camera designed more for computer vision: a <a href="https://www.flir.com/products/blackfly-s-usb3/?model=BFS-U3-16S2M-CS">FLIR blackfly S</a>. The camera is held in a fixed position. The Blackfly S camera is accessed using an excellent API which has a pre-built ROS driver we only needed to do small tweaks on to get running. Our fork of the spinnaker ROS driver is <a href="https://github.com/dartmouthrobotics/spinnaker_sdk_camera_driver">here</a>. The Blackfly S allows Droplet to read raw monochrome image frames with low latency directly on its main computer which greatly improves localization performance (and thus the general quality of the system as a whole).
+		</p>
+		
+        <h3>Main Computer</h3>
+		<p>
+		After changing the camera, the main bottleneck in latency became the speed at which video frames could be processed by the main computer. The Raspberry Pi 3B that comes with the BlueROV also lacks USB3 ports which makes reading frames off the camera just a little bit slower than it needs to be. Our first impulse was to use a Raspberry Pi 4 which offers more RAM, USB3 ports and a faster processor. At the time, however, there wasn't enough support for Ubuntu to make developing on the Raspberry Pi 4 worthwhile.
+		</p>
+		<p>
+		We ended up settling on an <a href="https://up-board.org/wp-content/uploads/datasheets/Datasheet-UP-Squared-V1.0.pdf">UpSquared</a> for the main computer because it was just small enough to fit in the 4" enclosure tube while also packing a lot of punch for its size. Being x86 is an added bonus since there tends to be more library support from ROS for x86 computers.
+		</p>
+		
+        <h3>Removing the tether</h3>
+		
+		<p>
+		The BlueROV2 is a high power machine so the minor dynamic effects that the tether has on the robot are easy to adapt to for a human pilot. The human also has some intuition of how drag and currents work so they can learn
+		quickly to change if something isn't working out. For a PID control loop, changing dynamics wreak havoc on the robot's ability to position itself. In addition, the tether makes it more complicated to transport and deploy the robot.
+		</p>
+		
+		<p>
+		Instead of using a wired tether, we opted for having the robot host a wifi network which the operator can connect to when the robot is surfaced for loading and updating code / starting software. This choice means that the robot has to be surfaced to interact with its computer in a meaningful way. We chose to have the robot host its own network so that it can be accessed in wifi-deprived situations, like, say, on a dive boat.
+		</p>
 
-        <h4>Removing the tether</h4>
-
-        <h4>A simple UI for operation by swimmers</h4>
+        <h3>A simple UI for operation by swimmers</h3>
+		<figure>
+			<img src="../static_assets/image_of_ui.jpg" style="max-width: 450px" class="rotate-180"/>
+		</figure>
+		<p>
+			During one tank test of the robot after removing the tether, a software bug caused the robot to turn all eight of its motors on full speed and leave them there. We had no way to reconnect to the robot when it was submerged so someone had to jump in the tank and wrestle the robot to the surface while it bucked and flipped around, spraying water all over the lab. Obviously, having no way to interact with the robot while submerged was a nonstarter.
+		</p>
+		
+		<p>
+			We developed a simple user interface that most importantly features a kill switch wired to a relay that can completely power the robot down using one of the <a href="https://bluerobotics.com/store/comm-control-power/switch/switch-10-5a-r1/">blue robotics switches</a>. The UI also features an LCD screen and LED strip driven by an Arduino Nano. The UI is connected to the main computer through a USB serial connection. We found the <a href="https://www.bluetrailengineering.com/product-page/cobalt-series-bulkhead-connector">four pin connectors</a> from bluetrail engineering to be awesome for making this bridge. No potting! 
+		</p>
+		
+		<h3>ESCs</h3>
+		
+		<p>
+			The BlueROV2's brushless thrusters are driven by little microchips called <a href="https://bluerobotics.com/learn/basic-esc-r3-firmware-files-and-customization/">Basic ESCs</a> that convert a pwm signal from the <a href="https://ardupilot.org/copter/docs/common-pixhawk-overview.html#common-pixhawk-overview">Pixhawk</a>'s thruster pins into the details of activating the magnets in sequence to drive / accelerate the thruster's propellers. For each thruster there is a distinct ESC which leads the ESCs to take a large amount of the space in the enclosure. To save space, we moved to two 4-in-1 ESCs called <a href="https://www.getfpv.com/dalrc-rocket-50a-3-6s-blheli-32-4-in-1-esc.html">DalRC Rocket 50A</a>. The 50 amp current limit on these ESCs means that the robot could harm itsself if for some reason four motors are put on at full tilt. Droplet does most of its work only gently using the thrusters so this limit is not prohibitive.
+		</p>
     </section>
 
     <section>
@@ -92,14 +162,14 @@
             it isn't clear what exactly the thrusters are going to do. Another confounding piece is complecity is that each motor has a different response to pwm values sent to the ESCs. Each motor starts spinning at a different PWM value
         and the value is different in the forward and reverse directions.</p>
 
-        <h2>A simplified control system</h2>
+        <h3>A simplified control system</h3>
 
         <p>
             Achieving autonomous execution of behaviors that require control much finer than that usually required of a ROV required totally reimagining the control system. To that end, we created a drastically simplified control
             system. We replaced the blue robotics BasicESCs with more capable 4-in-one ESCs that allow configuration via a GUI which made it relatively simply to change the ESC configuration to be more suited to what we need. We
             also developed a hugely simplified firmware for the FCU. The firmware is so simple that it effetively demotes the FCU to an IO board running the mavlink messaging protocol. Rather than using the joystick-based mapping
             between rc override channels and the motors, we made each channel reference a distinct motor. Other than performing some basic safety checks, the firmware simply forwards the speeds given in an rc override message to
-            the ESCs.
+            the ESCs. The Firmware we developed is called SimpleSub. It's on github <a href="https://gitlab.com/dartmouthrobotics/ardupilot-simplesub">here</a>.
         </p>
 
         <p>
@@ -119,7 +189,9 @@
             <video src="../static_assets/newest_gripper_off_robot.mp4" controls="" style="max-height: 450px;"></video>
         </figure>
 
-        Throughout each iteration of the manipulator
+		<p>
+        	Throughout each iteration of the manipulator
+		</p>
     </section>
 
     <section>
@@ -127,33 +199,6 @@
 
         <figure>
             <img src="../static_assets/me_in_pool_working_2.JPG" alt="Me in pool">
-            <figcaption>
-                aaa
-            </figcaption>
-        </figure>
-    </section>
-
-    <section>
-        <h2>
-            Evolution of the infrastructure
-        </h2>
-
-        <figure>
-            <img src="../static_assets/build_platforms.JPG" alt="Me in pool">
-            <figcaption>
-                aaa
-            </figcaption>
-        </figure>
-    </section>
-
-
-    <section>
-        <h2>
-            Evolution of the internal hardware
-        </h2>
-
-        <figure>
-            <img src="../static_assets/build_platforms.JPG" alt="Me in pool">
             <figcaption>
                 aaa
             </figcaption>
